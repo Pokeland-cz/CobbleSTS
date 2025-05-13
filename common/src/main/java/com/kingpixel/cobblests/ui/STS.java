@@ -6,6 +6,7 @@ import ca.landonjw.gooeylibs2.api.button.RateLimitedButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.pokemon.labels.CobblemonPokemonLabels;
 import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.item.PokemonItem;
@@ -21,6 +22,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -120,12 +122,18 @@ public class STS {
           .with(DataComponentTypes.ITEM_NAME, AdventureTranslator.toNative(CobbleSTS.language.getItemNotAllowShiny().getDisplayname()))
           .with(DataComponentTypes.LORE, new LoreComponent(AdventureTranslator.toNativeL(CobbleSTS.language.getItemNotAllowShiny().getLore())))
           .build();
-      } else if (pokemon.isLegendary() && !CobbleSTS.config.isAllowlegendary()) {
+      } else if ((pokemon.isLegendary() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()) && !CobbleSTS.config.isAllowlegendary()) {
         button = GooeyButton.builder()
           .display(CobbleSTS.language.getItemNotAllowLegendary().getItemStack())
           .with(DataComponentTypes.ITEM_NAME, AdventureTranslator.toNative(CobbleSTS.language.getItemNotAllowLegendary().getDisplayname()))
           .with(DataComponentTypes.LORE, new LoreComponent(AdventureTranslator.toNativeL(CobbleSTS.language.getItemNotAllowLegendary().getLore())))
           .build();
+      } else if (!pokemon.heldItem().isEmpty()) {
+        button = GooeyButton.builder()
+                .display(CobbleSTS.language.getItemBlacklisted().getItemStack())
+                .with(DataComponentTypes.ITEM_NAME, AdventureTranslator.toNative(CobbleSTS.language.getItemBlacklisted().getDisplayname()))
+                .with(DataComponentTypes.LORE, new LoreComponent(AdventureTranslator.toNativeL(Collections.singletonList("Pokémon má na sobě held item, nemůžeš ho prodat."))))
+                .build();
       } else {
         button = GooeyButton.builder()
           .display(PokemonItem.from(pokemon))

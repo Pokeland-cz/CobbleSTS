@@ -1,10 +1,11 @@
 package com.kingpixel.cobblests.utils;
 
 import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.pokemon.labels.CobblemonPokemonLabels;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.kingpixel.cobblests.CobbleSTS;
-import com.kingpixel.cobbleutils.util.EconomyUtil;
+import com.kingpixel.cobbleutils.api.EconomyApi;
 import com.kingpixel.cobbleutils.util.PlayerUtils;
 import com.kingpixel.cobbleutils.util.PokemonUtils;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,7 +34,7 @@ public class STSUtil {
 
   public static BigDecimal Sell(Pokemon pokemon, boolean execute, ServerPlayerEntity player, boolean release) {
     boolean isBan =
-      CobbleSTS.config.getBlacklisted().contains(pokemon.showdownId()) || (pokemon.getShiny() && !CobbleSTS.config.isAllowshiny()) || (!CobbleSTS.config.isAllowlegendary() && pokemon.isLegendary());
+      CobbleSTS.config.getBlacklisted().contains(pokemon.showdownId()) || (pokemon.getShiny() && !CobbleSTS.config.isAllowshiny()) || (!CobbleSTS.config.isAllowlegendary() && (pokemon.isLegendary() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()));
     if (isBan) return BigDecimal.ZERO;
 
     BigDecimal base = CobbleSTS.config.getPokemon().getOrDefault(pokemon.showdownId(), CobbleSTS.config.getBase());
@@ -134,7 +135,7 @@ public class STSUtil {
           price = price.subtract(lostAmount);
         }
 
-        EconomyUtil.addMoney(player, CobbleSTS.config.getCurrency(), price);
+        EconomyApi.addMoney(player.getUuid(), price, "dollars", "IMPACTATOR");
         if (!partyStorageSlot.remove(pokemon)) {
           Cobblemon.INSTANCE.getStorage().getPC(player).remove(pokemon);
         }
