@@ -40,6 +40,7 @@ public class Lang {
   private String descprice;
   private String messagecooldown;
   private String readytosell;
+  private String pcpage;
   private List<String> pokemonLore;
   private ItemModel info;
   private ItemModel nopokemon;
@@ -86,6 +87,7 @@ public class Lang {
     colorhexItem = "<gradient:#27b3cf:#88d4e3>";
     colorPrice = "<gradient:#27b3cf:#88d4e3>";
     colorSeparator = "<gradient:#27b3cf:#88d4e3>";
+    pcpage = "§aPC Page";
     pokemonLore = new ArrayList<>(CobbleUtils.language.getLorepokemon());
     pokemonLore.add("Price: %price%");
     itemBlacklisted = new ItemModel("cobblemon:master_ball", "<gradient:#db2e2e:#e68c8c>Blacklisted", List.of(""));
@@ -187,7 +189,7 @@ public class Lang {
         confirm = lang.getConfirm();
         cancel = lang.getCancel();
         Pc = lang.getPc();
-
+        pcpage = lang.getPcpage();
 
         String data = gson.toJson(this);
         CompletableFuture<Boolean> futureWrite = Utils.writeFileAsync(CobbleSTS.path + "lang/", CobbleSTS.config.getLang() + ".json",
