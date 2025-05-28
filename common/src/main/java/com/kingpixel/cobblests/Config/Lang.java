@@ -41,6 +41,7 @@ public class Lang {
   private String messagecooldown;
   private String readytosell;
   private String pcpage;
+  private String messageInBattle;
   private List<String> pokemonLore;
   private ItemModel info;
   private ItemModel nopokemon;
@@ -93,6 +94,7 @@ public class Lang {
     itemBlacklisted = new ItemModel("cobblemon:master_ball", "<gradient:#db2e2e:#e68c8c>Blacklisted", List.of(""));
     messagecooldown = "&7You must wait &e%day%&6d &e%hour%&6h &e%minut%&6m &e%seconds%&6s &7to sell another pokemon.";
     readytosell = "&aReady to sell in STS";
+    messageInBattle = "%prefix% <gradient:#27b3cf:#88d4e3>You cannot sell a pokemon that is in battle.";
     itemNotAllowShiny = new ItemModel("cobblemon:luxury_ball", "<gradient:#db2e2e:#e68c8c>Shiny not allowed", List.of(""));
     itemNotAllowLegendary = new ItemModel("cobblemon:master_ball", "<gradient:#db2e2e:#e68c8c>Legendary not allowed", List.of(
       ""));
