@@ -139,10 +139,15 @@ public class STSUtil {
         if (!partyStorageSlot.remove(pokemon)) {
           Cobblemon.INSTANCE.getStorage().getPC(player).remove(pokemon);
         }
-        PlayerUtils.sendMessage(player, CobbleSTS.language.getSell()
-          .replace("%player%", player.getGameProfile().getName())
-          .replace("%pokemon%", pokemon.getSpecies().getName())
-          .replace("%price%", price.toString()), CobbleSTS.language.getPrefix());
+
+        String sellMsg = CobbleSTS.language.getSell()
+                .replace("%player%", player.getGameProfile().getName())
+                .replace("%pokemon%", pokemon.getSpecies().getName())
+                .replace("%price%", price.toString());
+
+        SalesLogger.log(sellMsg);
+
+        PlayerUtils.sendMessage(player, sellMsg, CobbleSTS.language.getPrefix());
       } else {
         return price;
       }
