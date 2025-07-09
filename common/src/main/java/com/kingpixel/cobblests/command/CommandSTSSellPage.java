@@ -62,11 +62,14 @@ public class CommandSTSSellPage implements Command<ServerCommandSource> {
         ItemModel itemConfirm = CobbleSTS.language.getConfirm();
         GooeyButton confirm = GooeyButton.builder()
                 .display(itemConfirm.getItemStack())
-                .onClick(action -> box.forEach(pokemon -> {
-                    if(canSell(pokemon)) {
-                        STSUtil.Sell(pokemon, true, action.getPlayer(), false);
-                    }
-                }))
+                .onClick(action -> {
+                    box.forEach(pokemon -> {
+                        if(canSell(pokemon)) {
+                            STSUtil.Sell(pokemon, true, action.getPlayer(), false);
+                        }
+                    });
+                    UIManager.closeUI(action.getPlayer());
+                })
                 .build();
 
         GooeyButton pageButton = GooeyButton.builder()

@@ -7,6 +7,7 @@ import com.kingpixel.cobbleutils.util.AdventureTranslator;
 import com.kingpixel.cobbleutils.util.PlayerUtils;
 import com.kingpixel.cobbleutils.util.TypeMessage;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -91,11 +92,13 @@ public class CommandTree {
         dispatcher.register(base.then(
                 CommandManager.literal("sellpage")
                         .requires(source -> PermissionApi.hasPermission(source, "cobblests.user", 2))
-                        .executes(context -> {
-                            ServerPlayerEntity player = context.getSource().getPlayer();
-                            if (player == null || isBattleActive(player)) return 0;
-                            return new CommandSTSSellPage().run(context);
-                        })
+                        .then(CommandManager.argument("page", IntegerArgumentType.integer(1, 1000))
+                            .executes(context -> {
+                                ServerPlayerEntity player = context.getSource().getPlayer();
+                                if (player == null || isBattleActive(player)) return 0;
+                                return new CommandSTSSellPage().run(context);
+                            })
+                        )
         ));
     }
 }
