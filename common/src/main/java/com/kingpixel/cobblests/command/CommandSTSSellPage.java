@@ -104,7 +104,7 @@ public class CommandSTSSellPage implements Command<ServerCommandSource> {
             return false;
         }
 
-        if((pokemon.isLegendary() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()) && !CobbleSTS.config.isAllowlegendary()) {
+        if((pokemon.isLegendary() || pokemon.isMythical() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()) && !CobbleSTS.config.isAllowlegendary()) {
             return false;
         }
 

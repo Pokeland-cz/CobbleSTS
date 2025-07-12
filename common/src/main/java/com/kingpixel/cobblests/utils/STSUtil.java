@@ -36,7 +36,7 @@ public class STSUtil {
 
   public static BigDecimal Sell(Pokemon pokemon, boolean execute, ServerPlayerEntity player, boolean release) {
     boolean isBan =
-      CobbleSTS.config.getBlacklisted().contains(pokemon.showdownId()) || (pokemon.getShiny() && !CobbleSTS.config.isAllowshiny()) || (!CobbleSTS.config.isAllowlegendary() && (pokemon.isLegendary() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()));
+      CobbleSTS.config.getBlacklisted().contains(pokemon.showdownId()) || (pokemon.getShiny() && !CobbleSTS.config.isAllowshiny()) || (!CobbleSTS.config.isAllowlegendary() && (pokemon.isLegendary() || pokemon.isMythical() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()));
     if (isBan) return BigDecimal.ZERO;
 
     BigDecimal base = CobbleSTS.config.getPokemon().getOrDefault(pokemon.showdownId(), CobbleSTS.config.getBase());

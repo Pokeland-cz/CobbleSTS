@@ -17,6 +17,7 @@ import com.kingpixel.cobblests.utils.STSUtil;
 import com.kingpixel.cobbleutils.Model.ItemModel;
 import com.kingpixel.cobbleutils.util.AdventureTranslator;
 import com.kingpixel.cobbleutils.util.PlayerUtils;
+import com.kingpixel.cobbleutils.util.TypeMessage;
 import com.kingpixel.cobbleutils.util.Utils;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
@@ -122,7 +123,7 @@ public class STS {
           .with(DataComponentTypes.ITEM_NAME, AdventureTranslator.toNative(CobbleSTS.language.getItemNotAllowShiny().getDisplayname()))
           .with(DataComponentTypes.LORE, new LoreComponent(AdventureTranslator.toNativeL(CobbleSTS.language.getItemNotAllowShiny().getLore())))
           .build();
-      } else if ((pokemon.isLegendary() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()) && !CobbleSTS.config.isAllowlegendary()) {
+      } else if ((pokemon.isLegendary() || pokemon.isMythical() || pokemon.hasLabels(CobblemonPokemonLabels.PARADOX) || pokemon.isUltraBeast()) && !CobbleSTS.config.isAllowlegendary()) {
         button = GooeyButton.builder()
           .display(CobbleSTS.language.getItemNotAllowLegendary().getItemStack())
           .with(DataComponentTypes.ITEM_NAME, AdventureTranslator.toNative(CobbleSTS.language.getItemNotAllowLegendary().getDisplayname()))
@@ -148,7 +149,8 @@ public class STS {
                 PlayerUtils.sendMessage(
                   action.getPlayer(),
                   CobbleSTS.manager.formatTime(action.getPlayer()),
-                  CobbleSTS.language.getPrefix()
+                  CobbleSTS.language.getPrefix(),
+                        TypeMessage.CHAT
                 );
               }
             } else {
