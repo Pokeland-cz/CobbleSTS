@@ -2,7 +2,9 @@ package com.kingpixel.cobblests.utils;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.pokemon.labels.CobblemonPokemonLabels;
+import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
+import com.cobblemon.mod.common.pokemon.IVs;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.kingpixel.cobblests.CobbleSTS;
 import com.kingpixel.cobbleutils.api.EconomyApi;
@@ -140,14 +142,24 @@ public class STSUtil {
           Cobblemon.INSTANCE.getStorage().getPC(player).remove(pokemon);
         }
 
-        String sellMsg = CobbleSTS.language.getSell()
-                .replace("%player%", player.getGameProfile().getName())
-                .replace("%pokemon%", pokemon.getSpecies().getName())
-                .replace("%price%", price.toString());
+        IVs iVs = pokemon.getIvs();
+        String pokemonStats =
+                iVs.get(Stats.HP) + ", " +
+                iVs.get(Stats.ATTACK) + ", " +
+                iVs.get(Stats.DEFENCE) + ", " +
+                iVs.get(Stats.SPECIAL_ATTACK) + ", " +
+                iVs.get(Stats.SPECIAL_DEFENCE) + ", " +
+                iVs.get(Stats.SPEED);
 
-        SalesLogger.log(sellMsg);
+        SalesLogger.log(player.getGameProfile().getName() + " sold " + pokemon.getSpecies().getName() + "[" + pokemonStats + "] for " + price);
 
-        PlayerUtils.sendMessage(player, sellMsg, CobbleSTS.language.getPrefix());
+        PlayerUtils.sendMessage(
+                player,
+                CobbleSTS.language.getSell()
+                  .replace("%player%", player.getGameProfile().getName())
+                  .replace("%pokemon%", pokemon.getSpecies().getName())
+                  .replace("%price%", price.toString()),
+                CobbleSTS.language.getPrefix());
       } else {
         return price;
       }

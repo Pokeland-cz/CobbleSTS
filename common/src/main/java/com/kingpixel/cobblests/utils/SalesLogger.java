@@ -2,8 +2,7 @@ package com.kingpixel.cobblests.utils;
 
 import com.kingpixel.cobblests.CobbleSTS;
 
-import java.io.File;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,10 +21,13 @@ public class SalesLogger {
             } else {
                 CobbleSTS.LOGGER.error("Failed to create log directory");
             }
+        } else {
+            CobbleSTS.LOGGER.info("Found log directory");
         }
+
         LOG_DIR = logDir;
 
-        DATE = LocalDateTime.now();
+        DATE = LocalDateTime.MIN;
         updateDate();
     }
 
@@ -48,7 +50,8 @@ public class SalesLogger {
                 WRITER.close();
             }
 
-            WRITER = new PrintWriter(currentFile);
+            WRITER = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentFile, true))), true);
+            CobbleSTS.LOGGER.info("Opened new log file: " + currentFile);
         } catch (Exception e) {
             CobbleSTS.LOGGER.error("Error while updating the date", e);
         }
@@ -57,6 +60,5 @@ public class SalesLogger {
     public static void log(String message) {
         updateDate();
         WRITER.println("[" + LocalDateTime.now().format(MSG_FORMATTER) + "] " + message);
-        WRITER.flush();
     }
 }
