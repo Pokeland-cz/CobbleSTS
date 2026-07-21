@@ -57,7 +57,6 @@ public class User {
     if (hasCooldown(sts)) return false;
     String key = sts.getId();
     long duration = PlayerUtils.getCooldown(sts.getCooldownPermissions(), sts.getCooldown(), player);
-    duration *= amount;
     long now = System.currentTimeMillis();
     cooldowns.put(key, now + duration);
     markDirty();

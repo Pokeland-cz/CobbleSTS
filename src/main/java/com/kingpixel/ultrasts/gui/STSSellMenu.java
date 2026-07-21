@@ -115,6 +115,16 @@ public class STSSellMenu {
     .displayname("&cClose PC")
     .build();
 
+  private ItemModel sellAllBoxButtonPC = ItemModel.builder()
+    .slot(50)
+    .item("minecraft:gold_block")
+    .displayname("&eSell All Valid in Box")
+    .lore(List.of(
+      "&7Click to sell all valid Pokémon in this box",
+      "&7(Excludes Shiny, Legendary, Mythical, Paradox, and Ultra Beasts)"
+    ))
+    .build();
+
   private ItemModel closePartyButton = ItemModel.builder()
     .slot(31)
     .item("minecraft:barrier")
@@ -182,6 +192,22 @@ public class STSSellMenu {
         int max = Cobblemon.INSTANCE.getStorage().getPC(player).getBoxes().size();
         session.setCurrentBox((boxIdx + 1) % max);
         render(player, sts);
+      }, 1, TimeUnit.SECONDS, 1));
+
+      sellAllBoxButtonPC.applyTemplate(template, sellAllBoxButtonPC.getButton(action -> {
+        PCBox box = Cobblemon.INSTANCE.getStorage().getPC(player).getBoxes().get(boxIdx);
+        Set<Pokemon> toSell = new HashSet<>();
+        for (int i = 0; i < 30; i++) {
+          Pokemon pokemon = box.get(i);
+          if (pokemon != null && !sts.isBlackListed(pokemon) && !pokemon.getShiny()) {
+            toSell.add(pokemon);
+          }
+        }
+        if (toSell.isEmpty()) {
+            PlayerUtils.sendMessage(player, UltraSTS.lang.getNoPokemonSelected(), UltraSTS.lang.getPrefix(), TypeMessage.CHAT);
+            return;
+        }
+        handleSale(player, sts, toSell);
       }, 1, TimeUnit.SECONDS, 1));
 
       closePCButton.applyTemplate(template, closePCButton.getButton(action -> UltraSTS.lang.getMenu().open(player), 1, TimeUnit.SECONDS, 1));
